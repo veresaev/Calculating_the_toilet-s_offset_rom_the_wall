@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Калькулятор смещения унитаза</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: #e2e8f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .app {
+        width: 100%;
+        max-width: 420px;
+        background: #111827;
+        border-radius: 18px;
+        padding: 22px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-bottom: 18px;
+        text-align: center;
+        color: #f8fafc;
+    }
+
+    .field {
+        margin-bottom: 12px;
+    }
+
+    label {
+        font-size: 12px;
+        color: #94a3b8;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #334155;
+        background: #0b1220;
+        color: #e2e8f0;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    input:focus {
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 2px rgba(56,189,248,0.2);
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 12px;
+        margin-top: 10px;
+        background: linear-gradient(90deg, #38bdf8, #6366f1);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        transform: translateY(-1px);
+        opacity: 0.95;
+    }
+
+    .result {
+        margin-top: 16px;
+        padding: 14px;
+        background: #0b1220;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        font-size: 16px;
+        text-align: center;
+        color: #f1f5f9;
+    }
+
+    .hint {
+        font-size: 11px;
+        color: #64748b;
+        text-align: center;
+        margin-top: 10px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+    <h1>🚽 Смещение унитаза от стены</h1>
+
+    <div class="field">
+        <label>Высота патрубка у стены (мм)</label>
+        <input type="number" id="hPipe">
+    </div>
+
+    <div class="field">
+        <label>Высота выпуска унитаза (мм)</label>
+        <input type="number" id="hToilet">
+    </div>
+
+    <div class="field">
+        <label>Угол канализационного патрубка (°)</label>
+        <input type="number" id="anglePipe">
+    </div>
+
+    <div class="field">
+        <label>Угол выпуска унитаза (°)</label>
+        <input type="number" id="angleToilet">
+    </div>
+
+    <button onclick="calculate()">Рассчитать</button>
+
+    <div class="result" id="result">Введите данные для расчёта</div>
+
+    <div class="hint">Модель упрощённая (геометрическое приближение)</div>
+</div>
+
+<script>
+function calculate() {
+    const hPipe = parseFloat(document.getElementById('hPipe').value);
+    const hToilet = parseFloat(document.getElementById('hToilet').value);
+    const anglePipe = parseFloat(document.getElementById('anglePipe').value);
+    const angleToilet = parseFloat(document.getElementById('angleToilet').value);
+
+    if ([hPipe, hToilet, anglePipe, angleToilet].some(isNaN)) {
+        document.getElementById('result').innerText = "Введите все значения";
+        return;
+    }
+
+    const d = hPipe - hToilet;
+
+    const radPipe = anglePipe * Math.PI / 180;
+    const radToilet = angleToilet * Math.PI / 180;
+
+    const denom = Math.tan(radPipe) + Math.tan(radToilet);
+
+    if (denom === 0) {
+        document.getElementById('result').innerText = "Ошибка: некорректные углы";
+        return;
+    }
+
+    const offset = d / denom;
+
+    document.getElementById('result').innerHTML =
+        "📏 Смещение: <b>" + offset.toFixed(2) + " мм</b>";
+}
+</script>
+
+</body>
+</html>
