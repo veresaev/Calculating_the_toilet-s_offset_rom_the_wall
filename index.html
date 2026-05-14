@@ -9,7 +9,7 @@
     body {
         margin: 0;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-        background: linear-gradient(135deg, #0f172a, #1e293b);
+        background: linear-gradient(to bottom, #122757, #4c7cc9);
         color: #e2e8f0;
         display: flex;
         justify-content: center;
@@ -19,7 +19,7 @@
 
     .app {
         width: 100%;
-        max-width: 420px;
+        max-width: 320px;
         background: #111827;
         border-radius: 18px;
         padding: 22px;
@@ -38,7 +38,7 @@
     }
 
     label {
-        font-size: 12px;
+        font-size: 16px;
         color: #94a3b8;
         display: block;
         margin-bottom: 6px;
@@ -53,6 +53,7 @@
         color: #e2e8f0;
         outline: none;
         transition: 0.2s;
+        box-sizing: border-box;
     }
 
     input:focus {
@@ -142,7 +143,8 @@ function calculate() {
         return;
     }
 
-    const d = hPipe - hToilet;
+    // const d = hPipe - hToilet;
+    const d = Math.abs(hPipe - hToilet);
 
     const radPipe = anglePipe * Math.PI / 180;
     const radToilet = angleToilet * Math.PI / 180;
